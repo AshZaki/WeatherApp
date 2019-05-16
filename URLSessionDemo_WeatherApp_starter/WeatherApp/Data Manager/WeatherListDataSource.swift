@@ -37,12 +37,12 @@ extension WeatherListDataSource: UITableViewDataSource {
     
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
         // TO DO: fix this
-        return
+        return weatherItems.count
     }
     
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         // TO DO: fix this 
-        let cell: WeatherCell =
+        let cell: WeatherCell = tableView.dequeueReusableCell(withIdentifier: WeatherListViewController.weatherCellID, for: indexPath) as! WeatherCell
         let data = weatherItems[indexPath.row]
         cell.configure(data)
         return cell

@@ -14,23 +14,35 @@ class WeatherViewController: UIViewController {
     @IBOutlet var locationLabel: UILabel!
     @IBOutlet var temperature: UILabel!
     
-    var city = CityManager.fetchCity("LosAngeles")
-    let apiKey = "ccedf955fea93588a2c2489a803e8bc2"
+    var city = CityManager.fetchCity("Chicago")
+    let apiKey = "2d96dd3d19c9b16f14bcd27756c90d34"
     
     override func viewDidLoad() {
         super.viewDidLoad()
         
         guard let city = city else { return }
         
-        // Call Dark Sky API HERE
+         // Call Dark Sky API HERE
+        let url = URL(string: "https://api.darksky.net/forecast/\(apiKey)/\(city.latitude),\(city.longitude)")
+        
+        let task = URLSession.shared.dataTask(with: url!){ (data, response, error) in
+            
+            if error != nil {
+                print(error!)
+            }
+            
+            let weatherForecast = WeatherDataManager.forecast(data!, city: city)
+            DispatchQueue.main.async {[weak self] in
+                self?.iconView.image = UIImage(named: "\(weatherForecast.icon.rawValue)-large")
+                self?.locationLabel.text = "\(weatherForecast.city), \(weatherForecast.state)"
+                self?.temperature.text = "\(weatherForecast.currentTemperature)°"
+            }
+
+        }
+       
+        task.resume()
         
     }
 }
 
-//let weatherForecast = WeatherDataManager.forecast(data, city: city)
-//DispatchQueue.main.async {[weak self] in
-//    self?.iconView.image = UIImage(named: "\(weatherForecast.icon.rawValue)-large")
-//    self?.locationLabel.text = "\(weatherForecast.city), \(weatherForecast.state)"
-//    self?.temperature.text = "\(weatherForecast.currentTemperature)°"
-//}
 

@@ -25,7 +25,7 @@ class WeatherListViewController: UIViewController {
         
         // TO DO: reuse identifier
         let cellNib = UINib(nibName: String(describing: WeatherCell.self), bundle: nil)
-        tableView.register(cellNib, forCellReuseIdentifier: "")
+        tableView.register(cellNib, forCellReuseIdentifier: "weatherCell")
         
         tableView.dataSource = dataSource
         tableView.delegate = dataSource
